@@ -6,7 +6,7 @@ import ua.edu.ucu.stream.iterators.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
+
 
 public class AsIntStream implements IntStream, Iterable<Integer> {
     private Iterator<Integer> traversal;
@@ -38,13 +38,13 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
     @Override
     public Integer max() {
         if (empty()) throw  new IllegalArgumentException("Empty");
-        return reduce((int) Double.NEGATIVE_INFINITY, (max, curr) -> max > curr ? max: curr);
+        return reduce((int) Double.NEGATIVE_INFINITY, (max, curr) -> Math.max(max, curr));
     }
 
     @Override
     public Integer min() {
         if (empty()) throw  new IllegalArgumentException("Empty");
-        return reduce((int) Double.POSITIVE_INFINITY, (min, curr) -> min < curr ? min: curr);
+        return reduce((int) Double.POSITIVE_INFINITY, (min, curr) -> Math.min(min, curr));
     }
 
     @Override
