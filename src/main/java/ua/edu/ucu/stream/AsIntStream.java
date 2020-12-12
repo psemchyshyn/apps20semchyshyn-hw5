@@ -20,9 +20,14 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
         return new AsIntStream(new ArrayIterator(values));
     }
 
+    public boolean empty() {
+        return !traversal.hasNext();
+    }
 
     @Override
     public Double average() {
+        if (empty()) throw  new IllegalArgumentException("Empty");
+
         int average = 0;
         int size = 0;
         for (Integer integer: this) {
@@ -34,6 +39,7 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
 
     @Override
     public Integer max() {
+        if (empty()) throw  new IllegalArgumentException("Empty");
         int max = (int) Double.NEGATIVE_INFINITY;
         for (Integer integer: this) {
             if (integer > max) {
@@ -45,6 +51,7 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
 
     @Override
     public Integer min() {
+        if (empty()) throw  new IllegalArgumentException("Empty");
         int min = (int) Double.POSITIVE_INFINITY;
         for (Integer integer: this) {
             if (integer < min) {
@@ -65,6 +72,7 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
 
     @Override
     public Integer sum() {
+        if (empty()) throw  new IllegalArgumentException("Empty");
         int sum = 0;
         for (Integer integer: this) {
             sum += integer;

@@ -16,14 +16,14 @@ public class FlatMapIterator implements Iterator<Integer> {
     }
     @Override
     public boolean hasNext() {
-        return (helper != null && helper.hasNext()) || stream.hasNext();
+        if ((helper == null || !helper.hasNext()) && stream.hasNext()){
+            helper = ((AsIntStream) function.applyAsIntStream(stream.next())).iterator();
+        }
+        return helper != null && helper.hasNext();
     }
 
     @Override
     public Integer next() {
-        if (helper == null || !helper.hasNext()) {
-            helper = ((AsIntStream) function.applyAsIntStream(stream.next())).iterator();
-        }
         return helper.next();
     }
 }
