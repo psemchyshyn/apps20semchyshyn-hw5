@@ -1,13 +1,12 @@
 package ua.edu.ucu.stream;
 
-import org.w3c.dom.traversal.DocumentTraversal;
 import ua.edu.ucu.function.*;
 import ua.edu.ucu.stream.iterators.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class AsIntStream implements IntStream, Iterable<Integer> {
     private Iterator<Integer> traversal;
@@ -27,7 +26,6 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
     @Override
     public Double average() {
         if (empty()) throw  new IllegalArgumentException("Empty");
-
         int average = 0;
         int size = 0;
         for (Integer integer: this) {
@@ -40,44 +38,24 @@ public class AsIntStream implements IntStream, Iterable<Integer> {
     @Override
     public Integer max() {
         if (empty()) throw  new IllegalArgumentException("Empty");
-        int max = (int) Double.NEGATIVE_INFINITY;
-        for (Integer integer: this) {
-            if (integer > max) {
-                max = integer;
-            }
-        }
-        return max;
+        return reduce((int) Double.NEGATIVE_INFINITY, (max, curr) -> max > curr ? max: curr);
     }
 
     @Override
     public Integer min() {
         if (empty()) throw  new IllegalArgumentException("Empty");
-        int min = (int) Double.POSITIVE_INFINITY;
-        for (Integer integer: this) {
-            if (integer < min) {
-                min = integer;
-            }
-        }
-        return min;
+        return reduce((int) Double.POSITIVE_INFINITY, (min, curr) -> min < curr ? min: curr);
     }
 
     @Override
     public long count() {
-        int size = 0;
-        for (Integer integer: this) {
-            size++;
-        }
-        return size;
+        return reduce(0, (count, x) -> count + 1);
     }
 
     @Override
     public Integer sum() {
         if (empty()) throw  new IllegalArgumentException("Empty");
-        int sum = 0;
-        for (Integer integer: this) {
-            sum += integer;
-        }
-        return sum;
+        return reduce(0, (summ, x) -> summ += x);
     }
 
     @Override
